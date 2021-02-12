@@ -22,7 +22,6 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: 'Compilation'
-      uses: vinay0410/tectonic-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run:
