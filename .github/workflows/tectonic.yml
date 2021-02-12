@@ -33,6 +33,4 @@ jobs:
         git add -A
         git commit -m "Update PDF"
         git push origin HEAD
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
 
