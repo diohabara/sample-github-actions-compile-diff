@@ -1,0 +1,32 @@
+name: test for tectonic
+
+on: 
+  pull_request:
+    paths:
+      - '**.tex'
+
+env:
+  TARGET_BRANCH: ${{ github.base_ref }}
+
+jobs:
+  latex-job:
+    runs-on: ubuntu-latest
+    name: A job to Compile Latex file
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+    - name: 'Fetch'
+      run: git fetch --depth 1 origin ${TARGET_BRANCH}
+    - name: 'Set up tectonic'
+      uses: wtfjoke/setup-tectonic@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: 'Compilation'
+      uses: vinay0410/tectonic-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run:
+        for file in $(git diff origin/$(TARGET_BRANCH} HEAD --diff-filter --name-only -- "*.tex" ; do
+          tectonic  ${file}
+        done
+
