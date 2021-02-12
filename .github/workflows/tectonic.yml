@@ -25,7 +25,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run:
-        for file in $(git diff origin/$(TARGET_BRANCH} HEAD --diff-filter --name-only -- "*.tex" ; do
+        for file in $(git diff origin/${TARGET_BRANCH} HEAD --diff-filter=AM --name-only -- "*.tex") ; do
           tectonic  ${file}
         done
 
