@@ -26,4 +26,8 @@ jobs:
         for file in $(git diff origin/${TARGET_BRANCH} HEAD --diff-filter=AM --name-only -- "*.tex") ; do
           tectonic  ${file}
         done
-
+    - name: `Upload pdf`
+      uses: actions/upload-artifact@v2
+      with:
+        name: **
+        path: **.pdf
