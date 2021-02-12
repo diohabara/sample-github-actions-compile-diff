@@ -15,6 +15,9 @@ jobs:
     steps:
     - name: 'Checkout'
       uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+        fetch-depth: 0
     - name: 'Fetch'
       run: git fetch --depth 1 origin ${TARGET_BRANCH}
     - name: 'Set up tectonic'
@@ -26,11 +29,14 @@ jobs:
         for file in $(git diff origin/${TARGET_BRANCH} HEAD --diff-filter=AM --name-only -- "*.tex") ; do
           tectonic  ${file}
         done
-    - name: update file and push to remote
+    - name: Commit files
       run: |
-        git config --global user.name "sample-push"
-        git config --global user.email "sample@sample.com"
-        git add -A
-        git commit -m "Update PDF"
-        git push origin HEAD
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -m "Add changes" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
 
