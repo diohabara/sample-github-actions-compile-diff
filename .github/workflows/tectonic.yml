@@ -1,44 +1,31 @@
-name: test for tectonic
+# ref: https://tech.yutaka0m.com/entry/2020/05/30/327/
+# use this for tex
+name: Test
 
-on: 
+on:
   pull_request:
     paths:
       - '**.tex'
 
 env:
+  # プルリクエストのターゲットブランチ
   TARGET_BRANCH: ${{ github.base_ref }}
 
 jobs:
-  latex-job:
+  test:
     runs-on: ubuntu-latest
-    name: A job to Compile Latex file
     steps:
-    - name: 'Checkout'
-      uses: actions/checkout@v2
-      with:
-        persist-credentials: false
-        fetch-depth: 0
-    - name: 'Fetch'
-      run: git fetch --depth 1 origin ${TARGET_BRANCH}
-    - name: 'Set up tectonic'
-      uses: wtfjoke/setup-tectonic@v1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: 'Compilation'
-      run: |
-        for file in $(git diff origin/${TARGET_BRANCH} HEAD --diff-filter=AM --name-only -- "*.tex") ; do
-          tectonic  ${file}
-        done
-    - name: Commit files
-      run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add .
-        git commit -m "Add changes"
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.base_ref }}
+      - name: 'Checkout'
+        uses: actions/checkout@v2
 
+      # git diffをするためにターゲットブランチをフェッチする
+      - name: 'Fetch'
+        run: git fetch --depth 1 origin ${TARGET_BRANCH}
 
+      - name: 'echo'
+        run: |
+          # ターゲットブランチとHEAD間で、追加,変更されたjavaファイルのパスを取得してループ処理
+          for file in $(git diff origin/${TARGET_BRANCH} HEAD --diff-filter=AM --name-only -- "*.tex") ; do
+            # ここで任意の処理をする
+            echo ${file}
+          done
