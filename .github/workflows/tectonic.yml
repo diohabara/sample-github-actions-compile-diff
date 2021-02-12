@@ -40,6 +40,7 @@ jobs:
         git config --local user.email "diohabara@gmail.com"
         git config --local user.name "diohabara"
         git switch -c dev
-        git commit -m "Add changes" -a
+        git add .
+        git commit -m "Add changes"
         git push origin HEAD
 
